@@ -10,6 +10,7 @@ import {
   increment
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+
 // Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyBM-JvInafEv_LRoVw-ruvV-qL8rxQ1Hho",
