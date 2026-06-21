@@ -240,3 +240,81 @@ async function loadResources() {
 }
 
 loadResources();
+
+window.upvote = async (id) => {
+
+    const snapshot = await getDocs(collection(db, "posts"));
+
+    snapshot.forEach(async (docItem) => {
+
+        const data = docItem.data();
+
+        if (data.createdAt == id) {
+
+            await addDoc(collection(db, "posts"), {
+                ...data,
+                votes: (data.votes || 0) + 1,
+                createdAt: Date.now()
+            });
+
+        }
+
+    });
+
+    loadPosts();
+};
+
+window.downvote = async (id) => {
+
+    const snapshot = await getDocs(collection(db, "posts"));
+
+    snapshot.forEach(async (docItem) => {
+
+        const data = docItem.data();
+
+        if (data.createdAt == id) {
+
+            await addDoc(collection(db, "posts"), {
+                ...data,
+                votes: (data.votes || 0) - 1,
+                createdAt: Date.now()
+            });
+
+        }
+
+    });
+
+    loadPosts();
+};
+
+window.addComment = async (id) => {
+
+    const input = document.getElementById(`c-${id}`);
+    const comment = input.value;
+
+    if (!comment) return;
+
+    const snapshot = await getDocs(collection(db, "posts"));
+
+    snapshot.forEach(async (docItem) => {
+
+        const data = docItem.data();
+
+        if (data.createdAt == id) {
+
+            const updatedComments = data.comments || [];
+            updatedComments.push(comment);
+
+            await addDoc(collection(db, "posts"), {
+                ...data,
+                comments: updatedComments,
+                createdAt: Date.now()
+            });
+
+        }
+
+    });
+
+    input.value = "";
+    loadPosts();
+};
