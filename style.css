@@ -2,201 +2,136 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, sans-serif;
+    font-family: system-ui, Arial;
 }
 
 body{
-    background:#f2f4f7;
+    background:#f4f6fb;
+    color:#111;
+}
+
+/* LAYOUT */
+.app{
+    display:flex;
+    gap:20px;
     padding:20px;
 }
 
-/* HEADER */
-header{
-    background:#2f63e0;
-    color:white;
-    text-align:center;
-    padding:50px;
+/* LEFT FEED */
+.main-feed{
+    flex:2;
+}
+
+/* SIDEBAR */
+.sidebar{
+    flex:1;
+    background:white;
+    padding:15px;
     border-radius:15px;
-    margin-bottom:30px;
+    height:fit-content;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
 }
 
-header h1{
-    font-size:3rem;
+/* TOP BAR */
+.topbar{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:15px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
 }
 
-header p{
-    margin-top:10px;
+.topbar h1{
+    font-size:24px;
 }
 
-/* TOGGLE SECTION */
-.toggle-section{
-    text-align:center;
+/* TOGGLE */
+.toggle{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
 }
 
-.buttons{
-    margin-top:20px;
-}
-
-.buttons button{
-    padding:12px 25px;
+.toggle button{
+    flex:1;
+    padding:10px;
     border:none;
     border-radius:10px;
     cursor:pointer;
-    margin:5px;
-    font-size:16px;
+    background:white;
 }
 
-.active{
+.toggle .active{
     background:#2f63e0;
     color:white;
+}
+
+/* CARD */
+.card{
+    background:white;
+    padding:15px;
+    border-radius:15px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom:15px;
 }
 
 /* FORM */
-.form-container{
-    max-width:800px;
-    margin:30px auto;
-}
-
-.form-container h2{
-    text-align:center;
-    margin-bottom:20px;
-}
-
 form{
     display:flex;
     flex-direction:column;
-    gap:15px;
+    gap:10px;
 }
 
-input,
-textarea,
-select{
-    padding:15px;
-    border:1px solid #ccc;
+input, select, textarea{
+    padding:10px;
+    border:1px solid #ddd;
     border-radius:10px;
 }
 
-.submit-btn{
+button{
+    padding:10px;
     background:#2f63e0;
     color:white;
     border:none;
-    padding:15px;
     border-radius:10px;
     cursor:pointer;
 }
 
-/* POSTS */
-.posts-section{
-    max-width:1000px;
-    margin:40px auto;
-}
-
-.posts-section h2{
-    text-align:center;
-    margin-bottom:20px;
-}
-
+/* POST CARD (REDDIT STYLE) */
 .post-card{
     background:white;
-    padding:20px;
+    padding:15px;
     border-radius:15px;
-    margin-bottom:15px;
-    box-shadow:0 2px 10px rgba(0,0,0,.08);
+    margin-bottom:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
 }
 
-.need-help{
-    border-left:6px solid #ff4d4d;
-}
-
-.can-help{
-    border-left:6px solid #34c759;
-}
-
-/* BADGES */
-.badge{
-    display:inline-block;
-    padding:5px 10px;
-    border-radius:20px;
-    color:white;
+.post-type{
     font-size:12px;
-    margin-bottom:10px;
-}
-
-.red{
-    background:#ff4d4d;
-}
-
-.green{
-    background:#34c759;
-}
-
-/* CONTACT */
-.contact{
-    margin-top:10px;
-    color:#555;
-}
-
-/* RESOURCES SECTION */
-.resources-section {
-    max-width: 900px;
-    margin: 50px auto;
-}
-
-.resources-section form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.resources-section button {
-    background: #2f63e0;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.resources-section a {
-    color: #2f63e0;
-    font-weight: bold;
-}
-.resource-card{
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    margin-top:15px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
-}
-
-.resource-title{
-    font-size:18px;
-    font-weight:bold;
-    margin-bottom:8px;
-}
-
-.resource-subject{
-    font-size:14px;
     color:#666;
-    margin-bottom:10px;
 }
 
-.resource-desc{
-    font-size:14px;
-    margin-bottom:15px;
-    color:#333;
+.post-title{
+    font-size:16px;
+    font-weight:bold;
+    margin-top:5px;
 }
 
-.resource-btn{
-    display:inline-block;
-    padding:10px 15px;
-    background:#2f63e0;
-    color:white;
+.post-meta{
+    font-size:13px;
+    color:#555;
+    margin-top:5px;
+}
+
+/* RESOURCE */
+.resource{
+    background:#f7f9ff;
+    padding:10px;
+    border-radius:10px;
+    margin-top:10px;
+}
+
+.resource a{
+    color:#2f63e0;
     text-decoration:none;
-    border-radius:8px;
-    font-size:14px;
-}
-
-.resource-btn:hover{
-    background:#1f4fc7;
 }
