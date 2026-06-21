@@ -1,68 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dharivaru - Student Help Network</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dharivaru</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<header>
-    <h1>Dharivaru</h1>
-    <p>Students helping students.</p>
-</header>
+    <header>
+        <h1>Dharivaru</h1>
+        <p>Students helping students.</p>
+    </header>
 
+    <section class="toggle-section">
+        <h2>What do you need?</h2>
 
-<section class="intro">
-    <h2>What do you need?</h2>
+        <div class="buttons">
+            <button id="needBtn" class="active">📚 I Need Help</button>
+            <button id="helpBtn">🤝 I Can Help</button>
+        </div>
+    </section>
 
-    <button onclick="showForm('help')">
-        📚 I Need Help
-    </button>
+    <section class="form-container">
 
-    <button onclick="showForm('offer')">
-        🤝 I Can Help
-    </button>
-</section>
+        <h2 id="formTitle">Tell us what you need 📚</h2>
 
+        <form id="postForm">
 
-<section id="formSection" class="hidden">
+            <input
+                type="text"
+                id="name"
+                placeholder="Your Name"
+                required
+            >
 
-    <h2 id="formTitle"></h2>
+            <select id="subject">
+                <option>Mathematics</option>
+                <option>English</option>
+                <option>Dhivehi</option>
+                <option>Science</option>
+                <option>Biology</option>
+                <option>Chemistry</option>
+                <option>Physics</option>
+                <option>Accounting</option>
+                <option>Business</option>
+                <option>ICT</option>
+                <option>Programming</option>
+                <option>Other</option>
+            </select>
 
-    <input placeholder="Your name">
+            <textarea
+                id="description"
+                rows="5"
+                placeholder="Describe what you need help with"
+                required
+            ></textarea>
 
-    <select>
-        <option>Mathematics</option>
-        <option>Science</option>
-        <option>Programming</option>
-        <option>Languages</option>
-        <option>Other</option>
-    </select>
+            <input
+                type="text"
+                id="contact"
+                placeholder="Contact (Telegram, WhatsApp, etc)"
+            >
 
-    <textarea placeholder="Describe what you need"></textarea>
+            <button type="submit" class="submit-btn">
+                Submit
+            </button>
 
-    <input placeholder="Contact (optional)">
+        </form>
+    </section>
 
-    <button>
-        Submit
-    </button>
+    <section class="posts-section">
 
-</section>
+        <h2>Recent Posts</h2>
 
+        <div id="postsContainer"></div>
 
-<section>
-    <h2>Recent Posts</h2>
-
-    <div class="card">
-        <h3>Need Help - Mathematics</h3>
-        <p>Looking for someone to explain calculus.</p>
-    </div>
-
-</section>
-
+    </section>
 
 <script src="script.js"></script>
-
 </body>
 </html>
