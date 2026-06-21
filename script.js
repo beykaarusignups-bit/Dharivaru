@@ -1,5 +1,30 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBM-JvInafEv_LRoVw-ruvV-qL8rxQ1Hho",
+  authDomain: "dharivaru-7507b.firebaseapp.com",
+  projectId: "dharivaru-7507b",
+  storageBucket: "dharivaru-7507b.firebasestorage.app",
+  messagingSenderId: "877327082900",
+  appId: "1:877327082900:web:f1f0c0cc1e96d40adb1b81"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Default Post Type
 let postType = "Need Help";
 
+// Elements
 const needBtn = document.getElementById("needBtn");
 const helpBtn = document.getElementById("helpBtn");
 const formTitle = document.getElementById("formTitle");
@@ -9,8 +34,7 @@ const postsContainer = document.getElementById("postsContainer");
 
 const description = document.getElementById("description");
 
-let posts = [];
-
+// Toggle Buttons
 needBtn.addEventListener("click", () => {
 
     postType = "Need Help";
@@ -35,7 +59,8 @@ helpBtn.addEventListener("click", () => {
 
 });
 
-form.addEventListener("submit", (e) => {
+// Submit Form
+form.addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
@@ -43,52 +68,105 @@ form.addEventListener("submit", (e) => {
         type: postType,
         name: document.getElementById("name").value,
         subject: document.getElementById("subject").value,
-        description: description.value,
-        contact: document.getElementById("contact").value
+        description: document.getElementById("description").value,
+        contact: document.getElementById("contact").value,
+        createdAt: Date.now()
     };
 
-    posts.unshift(post);
+    try {
 
-    renderPosts();
+        await addDoc(collection(db, "posts"), post);
 
-    form.reset();
+        alert("Post submitted successfully!");
+
+        form.reset();
+
+        loadPosts();
+
+    } catch (error) {
+
+        console.error("Error adding post:", error);
+
+        alert("Failed to submit post.");
+
+    }
 
 });
 
-function renderPosts() {
+// Load Posts
+async function loadPosts() {
 
-    postsContainer.innerHTML = "";
+    postsContainer.innerHTML = "<p>Loading posts...</p>";
 
-    posts.forEach(post => {
+    try {
 
-        const card = document.createElement("div");
+        const snapshot = await getDocs(collection(db, "posts"));
 
-        card.className =
-            post.type === "Need Help"
-            ? "post-card need-help"
-            : "post-card can-help";
+        let posts = [];
 
-        card.innerHTML = `
-            <div class="badge ${
+        snapshot.forEach((doc) => {
+
+            posts.push(doc.data());
+
+        });
+
+        // Sort newest first
+        posts.sort((a, b) => b.createdAt - a.createdAt);
+
+        postsContainer.innerHTML = "";
+
+        if (posts.length === 0) {
+
+            postsContainer.innerHTML =
+                "<p>No posts yet. Be the first to post!</p>";
+
+            return;
+
+        }
+
+        posts.forEach(post => {
+
+            const card = document.createElement("div");
+
+            card.className =
                 post.type === "Need Help"
-                ? "red"
-                : "green"
-            }">
-                ${post.type}
-            </div>
+                ? "post-card need-help"
+                : "post-card can-help";
 
-            <h3>${post.name}</h3>
+            card.innerHTML = `
+                <div class="badge ${
+                    post.type === "Need Help"
+                    ? "red"
+                    : "green"
+                }">
+                    ${post.type}
+                </div>
 
-            <p><strong>Subject:</strong> ${post.subject}</p>
+                <h3>${post.name}</h3>
 
-            <p>${post.description}</p>
+                <p><strong>Subject:</strong> ${post.subject}</p>
 
-            <p class="contact">
-                📞 ${post.contact || "No contact provided"}
-            </p>
-        `;
+                <p>${post.description}</p>
 
-        postsContainer.appendChild(card);
+                <p class="contact">
+                    📞 ${post.contact || "No contact provided"}
+                </p>
+            `;
 
-    });
+            postsContainer.appendChild(card);
+
+        });
+
+    } catch (error) {
+
+        console.error("Error loading posts:", error);
+
+        postsContainer.innerHTML =
+            "<p>Failed to load posts.</p>";
+
+    }
+
 }
+
+// Initial Load
+loadPosts();
