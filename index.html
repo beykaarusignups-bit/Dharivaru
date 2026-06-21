@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dharivaru</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dharivaru</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -12,77 +21,166 @@
 <div class="app">
 
     <!-- MAIN FEED -->
+
     <div class="main-feed">
 
         <header class="topbar">
+
             <h1>📚 Dharivaru</h1>
-            <p>Students helping students</p>
+
+            <p>Students helping students across Maldives</p>
+
         </header>
 
         <!-- TOGGLE -->
+
         <div class="toggle">
-            <button id="needBtn" class="active">🆘 Need Help</button>
-            <button id="helpBtn">🤝 Can Help</button>
+
+            <button id="needBtn" class="active">
+                🆘 Need Help
+            </button>
+
+            <button id="helpBtn">
+                🤝 Can Help
+            </button>
+
         </div>
 
-        <!-- POST FORM -->
+        <!-- CREATE POST -->
+
         <div class="card">
 
-            <h2 id="formTitle">Tell us what you need</h2>
+            <h2 id="formTitle">
+                Tell us what you need
+            </h2>
 
             <form id="postForm">
 
-                <input id="name" placeholder="Your name" required>
+                <input
+                    id="name"
+                    placeholder="Your name"
+                    required>
 
                 <select id="subject">
+
                     <option>Mathematics</option>
+
                     <option>Science</option>
+
                     <option>English</option>
+
                     <option>Dhivehi</option>
+
+                    <option>Accounting</option>
+
+                    <option>Business</option>
+
                     <option>Programming</option>
+
+                    <option>Chemistry</option>
+
+                    <option>Physics</option>
+
+                    <option>Biology</option>
+
                 </select>
 
-                <textarea id="description" placeholder="Write here..." required></textarea>
+                <textarea
+                    id="description"
+                    placeholder="Describe your question..."
+                    required>
+                </textarea>
 
-                <input id="contact" placeholder="Contact (optional)">
+                <input
+                    id="contact"
+                    placeholder="Contact (optional)">
 
-                <button type="submit">Post</button>
+                <button type="submit">
+
+                    🚀 Post
+
+                </button>
 
             </form>
 
         </div>
 
-        <!-- POSTS FEED -->
-        <div id="postsContainer"></div>
+        <!-- POSTS -->
+
+        <div id="postsContainer">
+
+        </div>
 
     </div>
 
     <!-- SIDEBAR -->
+
     <div class="sidebar">
+
+        <!-- ABOUT -->
 
         <div class="card">
 
-            <h2>📚 Resources</h2>
+            <h2>🎓 About</h2>
 
-            <form id="resourceForm">
+            <p style="margin-top:10px; color:#94a3b8;">
 
-                <input id="resTitle" placeholder="Title" required>
+                Dharivaru is a place where students can ask questions,
+                help others, and share learning resources.
 
-                <select id="resSubject">
-                    <option>Mathematics</option>
-                    <option>Science</option>
-                    <option>Programming</option>
-                </select>
+            </p>
 
-                <input id="resLink" placeholder="Link" required>
+        </div>
 
-                <textarea id="resDesc" placeholder="Description"></textarea>
+        <!-- SUBJECTS -->
 
-                <button type="submit">Add Resource</button>
+        <div class="card">
 
-            </form>
+            <h2>📚 Subjects</h2>
 
-            <div id="resourcesContainer"></div>
+            <div style="margin-top:15px; line-height:2">
+
+                <div>➗ Mathematics</div>
+
+                <div>🔬 Science</div>
+
+                <div>🇲🇻 Dhivehi</div>
+
+                <div>📖 English</div>
+
+                <div>💻 Programming</div>
+
+                <div>📈 Accounting</div>
+
+                <div>📊 Business</div>
+
+            </div>
+
+        </div>
+
+        <!-- FUTURE RESOURCES -->
+
+        <div class="card">
+
+            <h2>📂 Resources</h2>
+
+            <p style="margin-top:10px;color:#94a3b8;">
+
+                Coming Soon
+
+            </p>
+
+            <ul style="margin-top:10px;padding-left:20px;line-height:1.8;color:#94a3b8;">
+
+                <li>Past Papers</li>
+
+                <li>Revision Notes</li>
+
+                <li>Formula Sheets</li>
+
+                <li>Study Guides</li>
+
+            </ul>
 
         </div>
 
@@ -93,4 +191,5 @@
 <script type="module" src="script.js"></script>
 
 </body>
+
 </html>
