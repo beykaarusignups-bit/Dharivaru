@@ -1,4 +1,4 @@
-/* UNIFIED CARD SYSTEM */
+ /* UNIFIED CARD SYSTEM */
 .feed-card{
     background:white;
     padding:18px;
@@ -42,7 +42,7 @@
     margin-bottom:6px;
 }
 
-/* SUBJECT */
+/* SUBJECT / META */
 .meta{
     font-size:13px;
     color:#666;
@@ -65,38 +65,87 @@
     text-decoration:none;
     border-radius:8px;
     font-size:13px;
+    transition:0.2s;
 }
+
+.link-btn:hover{
+    background:#1f4fc7;
+}
+
+/* ========================= */
+/* VOTING SYSTEM (IMPROVED) */
+/* ========================= */
 
 .vote-section{
     display:flex;
-    gap:10px;
+    gap:8px;
     align-items:center;
-    margin-top:10px;
+    margin-top:12px;
 }
 
 .vote-section button{
-    padding:5px 10px;
+    padding:6px 10px;
     border:none;
-    border-radius:6px;
+    border-radius:8px;
     cursor:pointer;
+    background:#f1f3f6;
+    transition:0.2s;
+    font-size:13px;
 }
 
+.vote-section button:hover{
+    background:#e2e6ee;
+}
+
+.vote-section span{
+    font-size:13px;
+    font-weight:600;
+    color:#333;
+}
+
+/* ========================= */
+/* COMMENTS SYSTEM (IMPROVED) */
+/* ========================= */
+
 .comment-section{
-    margin-top:10px;
+    margin-top:12px;
     display:flex;
     flex-direction:column;
-    gap:5px;
+    gap:8px;
+    border-top:1px solid #eee;
+    padding-top:10px;
 }
 
 .comment-section input{
-    padding:8px;
+    padding:9px;
     border:1px solid #ddd;
-    border-radius:8px;
+    border-radius:10px;
+    outline:none;
 }
 
+.comment-section input:focus{
+    border-color:#2f63e0;
+}
+
+.comment-section button{
+    padding:8px;
+    border:none;
+    border-radius:10px;
+    background:#2f63e0;
+    color:white;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.comment-section button:hover{
+    background:#1f4fc7;
+}
+
+/* COMMENT ITEMS */
 .comment{
     font-size:13px;
     background:#f4f6fb;
-    padding:6px;
-    border-radius:6px;
+    padding:8px;
+    border-radius:8px;
+    margin-top:5px;
 }
