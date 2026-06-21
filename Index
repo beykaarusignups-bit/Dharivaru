@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Help Network</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Student Help Network</h1>
+    <p>Connect students who need help with students who can help.</p>
+
+    <div class="buttons">
+        <button>📚 I Need Help</button>
+        <button>🤝 I Can Help</button>
+    </div>
+
+    <h2>Recent Posts</h2>
+
+    <div id="posts">
+        <div class="card">
+            <h3>Need Help - Mathematics</h3>
+            <p>Looking for help with calculus.</p>
+        </div>
+    </div>
+
+</body>
+</html>
