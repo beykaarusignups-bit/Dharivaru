@@ -1,27 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Student Help Network</title>
+    <title>Dharivaru - Student Help Network</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <h1>Student Help Network</h1>
-    <p>Connect students who need help with students who can help.</p>
+<header>
+    <h1>Dharivaru</h1>
+    <p>Students helping students.</p>
+</header>
 
-    <div class="buttons">
-        <button>📚 I Need Help</button>
-        <button>🤝 I Can Help</button>
-    </div>
 
+<section class="intro">
+    <h2>What do you need?</h2>
+
+    <button onclick="showForm('help')">
+        📚 I Need Help
+    </button>
+
+    <button onclick="showForm('offer')">
+        🤝 I Can Help
+    </button>
+</section>
+
+
+<section id="formSection" class="hidden">
+
+    <h2 id="formTitle"></h2>
+
+    <input placeholder="Your name">
+
+    <select>
+        <option>Mathematics</option>
+        <option>Science</option>
+        <option>Programming</option>
+        <option>Languages</option>
+        <option>Other</option>
+    </select>
+
+    <textarea placeholder="Describe what you need"></textarea>
+
+    <input placeholder="Contact (optional)">
+
+    <button>
+        Submit
+    </button>
+
+</section>
+
+
+<section>
     <h2>Recent Posts</h2>
 
-    <div id="posts">
-        <div class="card">
-            <h3>Need Help - Mathematics</h3>
-            <p>Looking for help with calculus.</p>
-        </div>
+    <div class="card">
+        <h3>Need Help - Mathematics</h3>
+        <p>Looking for someone to explain calculus.</p>
     </div>
+
+</section>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
