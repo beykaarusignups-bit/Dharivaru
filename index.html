@@ -6,35 +6,35 @@
     <title>Dharivaru</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
+    <!-- HEADER -->
     <header>
         <h1>Dharivaru</h1>
         <p>Students helping students.</p>
     </header>
 
+    <!-- TOGGLE SECTION -->
     <section class="toggle-section">
+
         <h2>What do you need?</h2>
 
         <div class="buttons">
             <button id="needBtn" class="active">📚 I Need Help</button>
             <button id="helpBtn">🤝 I Can Help</button>
         </div>
+
     </section>
 
-
+    <!-- HELP FORM -->
     <section class="form-container">
 
         <h2 id="formTitle">Tell us what you need 📚</h2>
 
         <form id="postForm">
 
-            <input
-                type="text"
-                id="name"
-                placeholder="Your Name"
-                required
-            >
+            <input type="text" id="name" placeholder="Your Name" required>
 
             <select id="subject">
                 <option>Mathematics</option>
@@ -51,26 +51,22 @@
                 <option>Other</option>
             </select>
 
-            <textarea
-                id="description"
-                rows="5"
+            <textarea id="description" rows="5"
                 placeholder="Describe what you need help with"
-                required
-            ></textarea>
+                required></textarea>
 
-            <input
-                type="text"
-                id="contact"
-                placeholder="Contact (Telegram, WhatsApp, etc)"
-            >
+            <input type="text" id="contact"
+                placeholder="Contact (Telegram / WhatsApp)">
 
             <button type="submit" class="submit-btn">
                 Submit
             </button>
 
         </form>
+
     </section>
 
+    <!-- POSTS -->
     <section class="posts-section">
 
         <h2>Recent Posts</h2>
@@ -79,40 +75,48 @@
 
     </section>
 
-        <section class="resources-section">
+    <!-- RESOURCES -->
+    <section class="resources-section">
 
-    <h2>📚 Study Resources</h2>
+        <h2>📚 Study Resources</h2>
 
-    <form id="resourceForm">
+        <form id="resourceForm">
 
-        <input type="text" id="resTitle" placeholder="Resource Title" required>
+            <input type="text" id="resTitle"
+                placeholder="Resource Title" required>
 
-        <select id="resSubject">
-            <option>Mathematics</option>
-            <option>English</option>
-            <option>Dhivehi</option>
-            <option>Science</option>
-            <option>Biology</option>
-            <option>Chemistry</option>
-            <option>Physics</option>
-            <option>Accounting</option>
-            <option>Business</option>
-            <option>ICT</option>
-            <option>Programming</option>
-        </select>
+            <select id="resSubject">
+                <option>Mathematics</option>
+                <option>English</option>
+                <option>Dhivehi</option>
+                <option>Science</option>
+                <option>Biology</option>
+                <option>Chemistry</option>
+                <option>Physics</option>
+                <option>Accounting</option>
+                <option>Business</option>
+                <option>ICT</option>
+                <option>Programming</option>
+            </select>
 
-        <input type="text" id="resLink" placeholder="Google Drive / Link" required>
+            <input type="text" id="resLink"
+                placeholder="Google Drive / Link" required>
 
-        <textarea id="resDesc" placeholder="Short description"></textarea>
+            <textarea id="resDesc"
+                placeholder="Short description"></textarea>
 
-        <button type="submit">Add Resource</button>
+            <button type="submit">
+                Add Resource
+            </button>
 
-    </form>
+        </form>
 
-    <div id="resourcesContainer"></div>
+        <div id="resourcesContainer"></div>
 
-</section>
+    </section>
 
-<script type="module" src="script.js"></script>
+    <!-- SCRIPT -->
+    <script type="module" src="script.js"></script>
+
 </body>
 </html>
