@@ -128,64 +128,29 @@ select{
 .contact{
     margin-top:10px;
     color:#555;
-}
-// RESOURCE FORM
-const resourceForm = document.getElementById("resourceForm");
-const resourcesContainer = document.getElementById("resourcesContainer");
 
-// Add Resource
-resourceForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const resource = {
-        title: document.getElementById("resTitle").value,
-        subject: document.getElementById("resSubject").value,
-        link: document.getElementById("resLink").value,
-        description: document.getElementById("resDesc").value,
-        createdAt: Date.now()
-    };
-
-    try {
-        await addDoc(collection(db, "resources"), resource);
-        resourceForm.reset();
-        loadResources();
-    } catch (err) {
-        console.log(err);
-    }
-});
-
-// Load Resources
-async function loadResources() {
-
-    const snapshot = await getDocs(collection(db, "resources"));
-
-    let resources = [];
-
-    snapshot.forEach(doc => {
-        resources.push(doc.data());
-    });
-
-    resources.sort((a, b) => b.createdAt - a.createdAt);
-
-    resourcesContainer.innerHTML = "";
-
-    resources.forEach(res => {
-
-        const card = document.createElement("div");
-
-        card.className = "post-card";
-
-        card.innerHTML = `
-            <h3>📘 ${res.title}</h3>
-            <p><strong>Subject:</strong> ${res.subject}</p>
-            <p>${res.description || ""}</p>
-            <a href="${res.link}" target="_blank">Open Resource</a>
-        `;
-
-        resourcesContainer.appendChild(card);
-
-    });
+  .resources-section {
+    max-width: 900px;
+    margin: 50px auto;
 }
 
-// Load on start
-loadResources();
+.resources-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.resources-section button {
+    background: #2f63e0;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.resources-section a {
+    color: #2f63e0;
+    font-weight: bold;
+}
+}
