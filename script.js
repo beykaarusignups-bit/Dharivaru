@@ -10,7 +10,6 @@ import {
   increment
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-
 // Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyBM-JvInafEv_LRoVw-ruvV-qL8rxQ1Hho",
@@ -26,7 +25,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // ----------------------
-// POST SYSTEM
+// STATE
 // ----------------------
 
 let postType = "Need Help";
@@ -40,268 +39,162 @@ const postsContainer = document.getElementById("postsContainer");
 
 const description = document.getElementById("description");
 
-// Toggle
+// ----------------------
+// TOGGLE
+// ----------------------
+
 needBtn.addEventListener("click", () => {
-    postType = "Need Help";
-    needBtn.classList.add("active");
-    helpBtn.classList.remove("active");
-    formTitle.textContent = "Tell us what you need 📚";
-    description.placeholder = "Describe what you need help with";
+  postType = "Need Help";
+  needBtn.classList.add("active");
+  helpBtn.classList.remove("active");
+  formTitle.textContent = "Tell us what you need 📚";
+  description.placeholder = "Describe your problem...";
 });
 
 helpBtn.addEventListener("click", () => {
-    postType = "Can Help";
-    helpBtn.classList.add("active");
-    needBtn.classList.remove("active");
-    formTitle.textContent = "Tell us how you can help 🤝";
-    description.placeholder = "Describe how you can help";
-});
-
-// Submit Post
-form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const post = {
-        type: postType,
-        name: document.getElementById("name").value,
-        subject: document.getElementById("subject").value,
-        description: document.getElementById("description").value,
-        contact: document.getElementById("contact").value,
-        createdAt: Date.now(),
-        votes: 0,
-        comments: []
-    };
-
-    try {
-        await addDoc(collection(db, "posts"), post);
-        form.reset();
-        loadPosts();
-    } catch (err) {
-        console.log("Post error:", err);
-        alert("Failed to post");
-    }
+  postType = "Can Help";
+  helpBtn.classList.add("active");
+  needBtn.classList.remove("active");
+  formTitle.textContent = "Tell us how you can help 🤝";
+  description.placeholder = "Describe how you can help...";
 });
 
 // ----------------------
-// LOAD POSTS (FIXED)
+// CREATE POST
+// ----------------------
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const post = {
+    type: postType,
+    name: document.getElementById("name").value,
+    subject: document.getElementById("subject").value,
+    description: document.getElementById("description").value,
+    contact: document.getElementById("contact").value,
+    createdAt: Date.now(),
+    votes: 0,
+    comments: []
+  };
+
+  await addDoc(collection(db, "posts"), post);
+
+  form.reset();
+  loadPosts();
+});
+
+// ----------------------
+// LOAD POSTS (CLEAN)
 // ----------------------
 
 async function loadPosts() {
+  postsContainer.innerHTML = "<p>Loading...</p>";
 
-    postsContainer.innerHTML = "<p>Loading posts...</p>";
+  const snapshot = await getDocs(collection(db, "posts"));
 
-    try {
+  let posts = [];
 
-        const snapshot = await getDocs(collection(db, "posts"));
+  snapshot.forEach((docSnap) => {
+    posts.push({ id: docSnap.id, ...docSnap.data() });
+  });
 
-        let posts = [];
+  posts.sort((a, b) => b.createdAt - a.createdAt);
 
-        snapshot.forEach(docSnap => {
-            posts.push({ id: docSnap.id, ...docSnap.data() });
-        });
+  postsContainer.innerHTML = "";
 
-        posts.sort((a, b) => b.createdAt - a.createdAt);
+  posts.forEach((post) => {
+    const card = document.createElement("div");
+    card.className = "feed-card";
 
-        postsContainer.innerHTML = "";
+    card.innerHTML = `
+      <div class="badge ${post.type === "Need Help" ? "need" : "help"}">
+        ${post.type}
+      </div>
 
-        if (posts.length === 0) {
-            postsContainer.innerHTML = "<p>No posts yet.</p>";
-            return;
-        }
+      <div class="title">${post.name}</div>
 
-        posts.forEach(post => {
+      <div class="meta">📚 ${post.subject}</div>
 
-            const card = document.createElement("div");
-            card.className = "feed-card";
+      <div class="text">${post.description}</div>
 
-            card.innerHTML = `
-                <div class="badge ${post.type === "Need Help" ? "need" : "help"}">
-                    ${post.type}
-                </div>
+      <div class="meta">📞 ${post.contact || "No contact"}</div>
 
-                <div class="title">${post.name}</div>
+      <!-- VOTES -->
+      <div class="vote-section">
+        <button onclick="upvote('${post.id}')">👍</button>
+        <button onclick="downvote('${post.id}')">👎</button>
+        <span>Votes: ${post.votes || 0}</span>
+      </div>
 
-                <div class="meta">Subject: ${post.subject}</div>
+      <!-- COMMENTS -->
+      <div class="comment-section">
 
-                <div class="text">${post.description}</div>
+        <input id="c-${post.id}" placeholder="Write comment...">
 
-                <div class="meta">📞 ${post.contact || "No contact"}</div>
+        <button onclick="addComment('${post.id}')">Comment</button>
 
-                <!-- VOTING -->
-                <div class="vote-section">
-                    <button onclick="upvote('${post.id}')">👍</button>
-                    <button onclick="downvote('${post.id}')">👎</button>
-                    <span>Votes: ${post.votes || 0}</span>
-                </div>
+        <div>
+          ${(post.comments || [])
+            .map((c) => `<div class="comment">💬 ${c}</div>`)
+            .join("")}
+        </div>
 
-                <!-- COMMENTS -->
-                <div class="comment-section">
+      </div>
+    `;
 
-                    <input id="c-${post.id}" placeholder="Write comment...">
-
-                    <button onclick="addComment('${post.id}')">Comment</button>
-
-                    <div>
-                        ${(post.comments || []).map(c => `
-                            <div class="comment">💬 ${c}</div>
-                        `).join("")}
-                    </div>
-
-                </div>
-            `;
-
-            postsContainer.appendChild(card);
-
-        });
-
-    } catch (err) {
-        console.log(err);
-        postsContainer.innerHTML = "<p>Failed to load posts.</p>";
-    }
+    postsContainer.appendChild(card);
+  });
 }
 
 loadPosts();
 
 // ----------------------
-// VOTING (PROPER FIX)
+// VOTING (REAL FIX)
 // ----------------------
 
 window.upvote = async (id) => {
-    try {
-        const ref = doc(db, "posts", id);
-        await updateDoc(ref, {
-            votes: increment(1)
-        });
-        loadPosts();
-    } catch (err) {
-        console.log(err);
-    }
+  const ref = doc(db, "posts", id);
+  await updateDoc(ref, {
+    votes: increment(1)
+  });
+  loadPosts();
 };
 
 window.downvote = async (id) => {
-    try {
-        const ref = doc(db, "posts", id);
-        await updateDoc(ref, {
-            votes: increment(-1)
-        });
-        loadPosts();
-    } catch (err) {
-        console.log(err);
-    }
+  const ref = doc(db, "posts", id);
+  await updateDoc(ref, {
+    votes: increment(-1)
+  });
+  loadPosts();
 };
 
 // ----------------------
-// COMMENTS (PROPER FIX)
+// COMMENTS (REAL FIX)
 // ----------------------
 
 window.addComment = async (id) => {
+  const input = document.getElementById(`c-${id}`);
+  const text = input.value.trim();
 
-    const input = document.getElementById(`c-${id}`);
-    const comment = input.value.trim();
+  if (!text) return;
 
-    if (!comment) return;
+  const snapshot = await getDocs(collection(db, "posts"));
 
-    try {
+  snapshot.forEach(async (docSnap) => {
+    if (docSnap.id === id) {
+      const data = docSnap.data();
 
-        const ref = doc(db, "posts", id);
+      const updated = data.comments || [];
+      updated.push(text);
 
-        const snapshot = await getDocs(collection(db, "posts"));
+      const ref = doc(db, "posts", id);
 
-        snapshot.forEach(async (docSnap) => {
-
-            if (docSnap.id === id) {
-
-                const data = docSnap.data();
-
-                const updatedComments = data.comments || [];
-                updatedComments.push(comment);
-
-                await updateDoc(ref, {
-                    comments: updatedComments
-                });
-
-            }
-
-        });
-
-        input.value = "";
-        loadPosts();
-
-    } catch (err) {
-        console.log(err);
+      await updateDoc(ref, {
+        comments: updated
+      });
     }
+  });
+
+  input.value = "";
+  loadPosts();
 };
-
-// ----------------------
-// RESOURCE SYSTEM (UNCHANGED BUT CLEAN)
-// ----------------------
-
-const resourceForm = document.getElementById("resourceForm");
-const resourcesContainer = document.getElementById("resourcesContainer");
-
-resourceForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const resource = {
-        title: document.getElementById("resTitle").value,
-        subject: document.getElementById("resSubject").value,
-        link: document.getElementById("resLink").value,
-        description: document.getElementById("resDesc").value,
-        createdAt: Date.now()
-    };
-
-    try {
-        await addDoc(collection(db, "resources"), resource);
-        resourceForm.reset();
-        loadResources();
-    } catch (err) {
-        console.log(err);
-    }
-});
-
-async function loadResources() {
-
-    try {
-
-        const snapshot = await getDocs(collection(db, "resources"));
-
-        let resources = [];
-
-        snapshot.forEach(docSnap => {
-            resources.push(docSnap.data());
-        });
-
-        resources.sort((a, b) => b.createdAt - a.createdAt);
-
-        resourcesContainer.innerHTML = "";
-
-        resources.forEach(res => {
-
-            const card = document.createElement("div");
-            card.className = "feed-card";
-
-            card.innerHTML = `
-                <div class="badge resource">Resource</div>
-
-                <div class="title">📘 ${res.title}</div>
-
-                <div class="meta">Subject: ${res.subject}</div>
-
-                <div class="text">${res.description || "No description"}</div>
-
-                <a class="link-btn" href="${res.link}" target="_blank">
-                    Open Resource
-                </a>
-            `;
-
-            resourcesContainer.appendChild(card);
-
-        });
-
-    } catch (err) {
-        console.log(err);
-        resourcesContainer.innerHTML = "<p>Failed to load resources.</p>";
-    }
-}
-
-loadResources();
