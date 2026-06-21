@@ -10,6 +10,7 @@ body{
     padding:20px;
 }
 
+/* HEADER */
 header{
     background:#2f63e0;
     color:white;
@@ -27,6 +28,7 @@ header p{
     margin-top:10px;
 }
 
+/* TOGGLE SECTION */
 .toggle-section{
     text-align:center;
 }
@@ -49,6 +51,7 @@ header p{
     color:white;
 }
 
+/* FORM */
 .form-container{
     max-width:800px;
     margin:30px auto;
@@ -82,6 +85,7 @@ select{
     cursor:pointer;
 }
 
+/* POSTS */
 .posts-section{
     max-width:1000px;
     margin:40px auto;
@@ -108,6 +112,7 @@ select{
     border-left:6px solid #34c759;
 }
 
+/* BADGES */
 .badge{
     display:inline-block;
     padding:5px 10px;
@@ -125,11 +130,14 @@ select{
     background:#34c759;
 }
 
+/* CONTACT */
 .contact{
     margin-top:10px;
     color:#555;
+}
 
-  .resources-section {
+/* RESOURCES SECTION */
+.resources-section {
     max-width: 900px;
     margin: 50px auto;
 }
@@ -152,5 +160,4 @@ select{
 .resources-section a {
     color: #2f63e0;
     font-weight: bold;
-}
 }
