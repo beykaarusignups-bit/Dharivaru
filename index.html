@@ -9,114 +9,84 @@
 
 <body>
 
-    <!-- HEADER -->
-    <header>
-        <h1>Dharivaru</h1>
-        <p>Students helping students.</p>
-    </header>
+ <div class="app">
 
-    <!-- TOGGLE SECTION -->
-    <section class="toggle-section">
+    <!-- LEFT MAIN FEED -->
+    <div class="main-feed">
 
-        <h2>What do you need?</h2>
+        <header class="topbar">
+            <h1>📚 Dharivaru</h1>
+            <p>Students helping students</p>
+        </header>
 
-        <div class="buttons">
-            <button id="needBtn" class="active">📚 I Need Help</button>
-            <button id="helpBtn">🤝 I Can Help</button>
+        <!-- TOGGLE -->
+        <div class="toggle">
+            <button id="needBtn" class="active">🆘 Need Help</button>
+            <button id="helpBtn">🤝 Can Help</button>
         </div>
 
-    </section>
+        <!-- FORM -->
+        <div class="card form-card">
 
-    <!-- HELP FORM -->
-    <section class="form-container">
+            <h2 id="formTitle">Ask a question</h2>
 
-        <h2 id="formTitle">Tell us what you need 📚</h2>
+            <form id="postForm">
 
-        <form id="postForm">
+                <input id="name" placeholder="Your name" required>
 
-            <input type="text" id="name" placeholder="Your Name" required>
+                <select id="subject">
+                    <option>Mathematics</option>
+                    <option>Science</option>
+                    <option>English</option>
+                    <option>Dhivehi</option>
+                    <option>Programming</option>
+                    <option>Other</option>
+                </select>
 
-            <select id="subject">
-                <option>Mathematics</option>
-                <option>English</option>
-                <option>Dhivehi</option>
-                <option>Science</option>
-                <option>Biology</option>
-                <option>Chemistry</option>
-                <option>Physics</option>
-                <option>Accounting</option>
-                <option>Business</option>
-                <option>ICT</option>
-                <option>Programming</option>
-                <option>Other</option>
-            </select>
+                <textarea id="description" placeholder="Ask your question..." required></textarea>
 
-            <textarea id="description" rows="5"
-                placeholder="Describe what you need help with"
-                required></textarea>
+                <input id="contact" placeholder="Contact (optional)">
 
-            <input type="text" id="contact"
-                placeholder="Contact (Telegram / WhatsApp)">
+                <button type="submit">Post</button>
 
-            <button type="submit" class="submit-btn">
-                Submit
-            </button>
+            </form>
 
-        </form>
+        </div>
 
-    </section>
-
-    <!-- POSTS -->
-    <section class="posts-section">
-
-        <h2>Recent Posts</h2>
-
+        <!-- FEED -->
         <div id="postsContainer"></div>
 
-    </section>
+    </div>
 
-    <!-- RESOURCES -->
-    <section class="resources-section">
+    <!-- RIGHT SIDEBAR -->
+    <div class="sidebar">
 
-        <h2>📚 Study Resources</h2>
+        <h2>📚 Resources</h2>
 
         <form id="resourceForm">
 
-            <input type="text" id="resTitle"
-                placeholder="Resource Title" required>
+            <input id="resTitle" placeholder="Resource title" required>
 
             <select id="resSubject">
                 <option>Mathematics</option>
-                <option>English</option>
-                <option>Dhivehi</option>
                 <option>Science</option>
-                <option>Biology</option>
-                <option>Chemistry</option>
-                <option>Physics</option>
-                <option>Accounting</option>
-                <option>Business</option>
-                <option>ICT</option>
+                <option>English</option>
                 <option>Programming</option>
             </select>
 
-            <input type="text" id="resLink"
-                placeholder="Google Drive / Link" required>
+            <input id="resLink" placeholder="Link" required>
 
-            <textarea id="resDesc"
-                placeholder="Short description"></textarea>
-
-            <button type="submit">
-                Add Resource
-            </button>
+            <button type="submit">Add</button>
 
         </form>
 
         <div id="resourcesContainer"></div>
 
-    </section>
+    </div>
 
-    <!-- SCRIPT -->
-    <script type="module" src="script.js"></script>
+</div>
+
+<script type="module" src="script.js"></script>
 
 </body>
 </html>
