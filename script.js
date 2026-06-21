@@ -7,7 +7,7 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Firebase Configuration
+// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyBM-JvInafEv_LRoVw-ruvV-qL8rxQ1Hho",
   authDomain: "dharivaru-7507b.firebaseapp.com",
@@ -17,14 +17,16 @@ const firebaseConfig = {
   appId: "1:877327082900:web:f1f0c0cc1e96d40adb1b81"
 };
 
-// Initialize Firebase
+// Init Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Default Post Type
+// ----------------------
+// POST SYSTEM
+// ----------------------
+
 let postType = "Need Help";
 
-// Elements
 const needBtn = document.getElementById("needBtn");
 const helpBtn = document.getElementById("helpBtn");
 const formTitle = document.getElementById("formTitle");
@@ -34,9 +36,8 @@ const postsContainer = document.getElementById("postsContainer");
 
 const description = document.getElementById("description");
 
-// Toggle Buttons
+// Toggle
 needBtn.addEventListener("click", () => {
-
     postType = "Need Help";
 
     needBtn.classList.add("active");
@@ -44,11 +45,9 @@ needBtn.addEventListener("click", () => {
 
     formTitle.textContent = "Tell us what you need 📚";
     description.placeholder = "Describe what you need help with";
-
 });
 
 helpBtn.addEventListener("click", () => {
-
     postType = "Can Help";
 
     helpBtn.classList.add("active");
@@ -56,12 +55,10 @@ helpBtn.addEventListener("click", () => {
 
     formTitle.textContent = "Tell us how you can help 🤝";
     description.placeholder = "Describe how you can help";
-
 });
 
-// Submit Form
+// Submit Post
 form.addEventListener("submit", async (e) => {
-
     e.preventDefault();
 
     const post = {
@@ -74,23 +71,13 @@ form.addEventListener("submit", async (e) => {
     };
 
     try {
-
         await addDoc(collection(db, "posts"), post);
-
-        alert("Post submitted successfully!");
-
         form.reset();
-
         loadPosts();
-
-    } catch (error) {
-
-        console.error("Error adding post:", error);
-
-        alert("Failed to submit post.");
-
+    } catch (err) {
+        console.log("Post error:", err);
+        alert("Failed to post");
     }
-
 });
 
 // Load Posts
@@ -104,75 +91,54 @@ async function loadPosts() {
 
         let posts = [];
 
-        snapshot.forEach((doc) => {
+        snapshot.forEach(doc => posts.push(doc.data()));
 
-            posts.push(doc.data());
-
-        });
-
-        // Sort newest first
         posts.sort((a, b) => b.createdAt - a.createdAt);
 
         postsContainer.innerHTML = "";
 
         if (posts.length === 0) {
-
-            postsContainer.innerHTML =
-                "<p>No posts yet. Be the first to post!</p>";
-
+            postsContainer.innerHTML = "<p>No posts yet.</p>";
             return;
-
         }
 
         posts.forEach(post => {
 
             const card = document.createElement("div");
 
-            card.className =
-                post.type === "Need Help"
-                ? "post-card need-help"
-                : "post-card can-help";
+            card.className = "feed-card";
 
             card.innerHTML = `
-                <div class="badge ${
-                    post.type === "Need Help"
-                    ? "red"
-                    : "green"
-                }">
+                <div class="badge ${post.type === "Need Help" ? "need" : "help"}">
                     ${post.type}
                 </div>
 
-                <h3>${post.name}</h3>
+                <div class="title">${post.name}</div>
 
-                <p><strong>Subject:</strong> ${post.subject}</p>
+                <div class="meta">Subject: ${post.subject}</div>
 
-                <p>${post.description}</p>
+                <div class="text">${post.description}</div>
 
-                <p class="contact">
-                    📞 ${post.contact || "No contact provided"}
-                </p>
+                <div class="meta">📞 ${post.contact || "No contact"}</div>
             `;
 
             postsContainer.appendChild(card);
 
         });
 
-    } catch (error) {
-
-        console.error("Error loading posts:", error);
-
-        postsContainer.innerHTML =
-            "<p>Failed to load posts.</p>";
-
+    } catch (err) {
+        console.log(err);
+        postsContainer.innerHTML = "<p>Failed to load posts.</p>";
     }
-
 }
 
-// Initial Load
 loadPosts();
 
 
-// RESOURCE FORM
+// ----------------------
+// RESOURCE SYSTEM
+// ----------------------
+
 const resourceForm = document.getElementById("resourceForm");
 const resourcesContainer = document.getElementById("resourcesContainer");
 
@@ -193,57 +159,55 @@ resourceForm.addEventListener("submit", async (e) => {
         resourceForm.reset();
         loadResources();
     } catch (err) {
-        console.log(err);
+        console.log("Resource error:", err);
     }
 });
 
 // Load Resources
 async function loadResources() {
 
-    const snapshot = await getDocs(collection(db, "resources"));
+    try {
 
-    let resources = [];
+        const snapshot = await getDocs(collection(db, "resources"));
 
-    snapshot.forEach(doc => {
-        resources.push(doc.data());
-    });
+        let resources = [];
 
-    resources.sort((a, b) => b.createdAt - a.createdAt);
+        snapshot.forEach(doc => resources.push(doc.data()));
 
-    resourcesContainer.innerHTML = "";
+        resources.sort((a, b) => b.createdAt - a.createdAt);
 
-    resources.forEach(res => {
+        resourcesContainer.innerHTML = "";
 
-        const card = document.createElement("div");
+        resources.forEach(res => {
 
-        card.className = "post-card";
+            const card = document.createElement("div");
 
-        card.innerHTML = `
-    <div class="resource-card">
+            card.className = "feed-card";
 
-        <div class="resource-title">
-            📘 ${res.title}
-        </div>
+            card.innerHTML = `
+                <div class="badge resource">
+                    Resource
+                </div>
 
-        <div class="resource-subject">
-            Subject: ${res.subject}
-        </div>
+                <div class="title">📘 ${res.title}</div>
 
-        <div class="resource-desc">
-            ${res.description || "No description provided"}
-        </div>
+                <div class="meta">Subject: ${res.subject}</div>
 
-        <a class="resource-btn" href="${res.link}" target="_blank">
-            🔗 Open Resource
-        </a>
+                <div class="text">${res.description || "No description"}</div>
 
-    </div>
-`;
+                <a class="link-btn" href="${res.link}" target="_blank">
+                    Open Resource
+                </a>
+            `;
 
-        resourcesContainer.appendChild(card);
+            resourcesContainer.appendChild(card);
 
-    });
+        });
+
+    } catch (err) {
+        console.log(err);
+        resourcesContainer.innerHTML = "<p>Failed to load resources.</p>";
+    }
 }
 
-// Load on start
 loadResources();
