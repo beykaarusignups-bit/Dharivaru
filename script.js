@@ -111,23 +111,49 @@ async function loadPosts() {
 
             card.className = "feed-card";
 
-            card.innerHTML = `
-                <div class="badge ${post.type === "Need Help" ? "need" : "help"}">
-                    ${post.type}
-                </div>
+          card.innerHTML = `
+    <div class="feed-card">
 
-                <div class="title">${post.name}</div>
+        <div class="badge ${post.type === "Need Help" ? "need" : "help"}">
+            ${post.type}
+        </div>
 
-                <div class="meta">Subject: ${post.subject}</div>
+        <div class="title">${post.name}</div>
 
-                <div class="text">${post.description}</div>
+        <div class="meta">Subject: ${post.subject}</div>
 
-                <div class="meta">📞 ${post.contact || "No contact"}</div>
-            `;
+        <div class="text">${post.description}</div>
 
-            postsContainer.appendChild(card);
+        <div class="meta">📞 ${post.contact || "No contact"}</div>
 
-        });
+        <!-- VOTING -->
+        <div class="vote-section">
+            <button onclick="upvote('${post.createdAt}')">👍</button>
+            <button onclick="downvote('${post.createdAt}')">👎</button>
+            <span id="vote-${post.createdAt}">
+                👍 ${post.votes || 0}
+            </span>
+        </div>
+
+        <!-- COMMENTS -->
+        <div class="comment-section">
+
+            <input id="c-${post.createdAt}" placeholder="Write comment...">
+
+            <button onclick="addComment('${post.createdAt}')">
+                Comment
+            </button>
+
+            <div id="comments-${post.createdAt}">
+                ${(post.comments || []).map(c => `
+                    <div class="comment">💬 ${c}</div>
+                `).join("")}
+            </div>
+
+        </div>
+
+    </div>
+`;
 
     } catch (err) {
         console.log(err);
