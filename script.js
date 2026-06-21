@@ -4,7 +4,10 @@ import {
   getFirestore,
   collection,
   addDoc,
-  getDocs
+  getDocs,
+  doc,
+  updateDoc,
+  increment
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // Firebase Config
@@ -39,20 +42,16 @@ const description = document.getElementById("description");
 // Toggle
 needBtn.addEventListener("click", () => {
     postType = "Need Help";
-
     needBtn.classList.add("active");
     helpBtn.classList.remove("active");
-
     formTitle.textContent = "Tell us what you need 📚";
     description.placeholder = "Describe what you need help with";
 });
 
 helpBtn.addEventListener("click", () => {
     postType = "Can Help";
-
     helpBtn.classList.add("active");
     needBtn.classList.remove("active");
-
     formTitle.textContent = "Tell us how you can help 🤝";
     description.placeholder = "Describe how you can help";
 });
@@ -61,17 +60,16 @@ helpBtn.addEventListener("click", () => {
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-   const post = {
-    type: postType,
-    name: document.getElementById("name").value,
-    subject: document.getElementById("subject").value,
-    description: document.getElementById("description").value,
-    contact: document.getElementById("contact").value,
-    createdAt: Date.now(),
-
-    votes: 0,
-    comments: []
-};
+    const post = {
+        type: postType,
+        name: document.getElementById("name").value,
+        subject: document.getElementById("subject").value,
+        description: document.getElementById("description").value,
+        contact: document.getElementById("contact").value,
+        createdAt: Date.now(),
+        votes: 0,
+        comments: []
+    };
 
     try {
         await addDoc(collection(db, "posts"), post);
@@ -83,7 +81,10 @@ form.addEventListener("submit", async (e) => {
     }
 });
 
-// Load Posts
+// ----------------------
+// LOAD POSTS (FIXED)
+// ----------------------
+
 async function loadPosts() {
 
     postsContainer.innerHTML = "<p>Loading posts...</p>";
@@ -94,7 +95,9 @@ async function loadPosts() {
 
         let posts = [];
 
-        snapshot.forEach(doc => posts.push(doc.data()));
+        snapshot.forEach(docSnap => {
+            posts.push({ id: docSnap.id, ...docSnap.data() });
+        });
 
         posts.sort((a, b) => b.createdAt - a.createdAt);
 
@@ -108,52 +111,47 @@ async function loadPosts() {
         posts.forEach(post => {
 
             const card = document.createElement("div");
-
             card.className = "feed-card";
 
-          card.innerHTML = `
-    <div class="feed-card">
+            card.innerHTML = `
+                <div class="badge ${post.type === "Need Help" ? "need" : "help"}">
+                    ${post.type}
+                </div>
 
-        <div class="badge ${post.type === "Need Help" ? "need" : "help"}">
-            ${post.type}
-        </div>
+                <div class="title">${post.name}</div>
 
-        <div class="title">${post.name}</div>
+                <div class="meta">Subject: ${post.subject}</div>
 
-        <div class="meta">Subject: ${post.subject}</div>
+                <div class="text">${post.description}</div>
 
-        <div class="text">${post.description}</div>
+                <div class="meta">📞 ${post.contact || "No contact"}</div>
 
-        <div class="meta">📞 ${post.contact || "No contact"}</div>
+                <!-- VOTING -->
+                <div class="vote-section">
+                    <button onclick="upvote('${post.id}')">👍</button>
+                    <button onclick="downvote('${post.id}')">👎</button>
+                    <span>Votes: ${post.votes || 0}</span>
+                </div>
 
-        <!-- VOTING -->
-        <div class="vote-section">
-            <button onclick="upvote('${post.createdAt}')">👍</button>
-            <button onclick="downvote('${post.createdAt}')">👎</button>
-            <span id="vote-${post.createdAt}">
-                👍 ${post.votes || 0}
-            </span>
-        </div>
+                <!-- COMMENTS -->
+                <div class="comment-section">
 
-        <!-- COMMENTS -->
-        <div class="comment-section">
+                    <input id="c-${post.id}" placeholder="Write comment...">
 
-            <input id="c-${post.createdAt}" placeholder="Write comment...">
+                    <button onclick="addComment('${post.id}')">Comment</button>
 
-            <button onclick="addComment('${post.createdAt}')">
-                Comment
-            </button>
+                    <div>
+                        ${(post.comments || []).map(c => `
+                            <div class="comment">💬 ${c}</div>
+                        `).join("")}
+                    </div>
 
-            <div id="comments-${post.createdAt}">
-                ${(post.comments || []).map(c => `
-                    <div class="comment">💬 ${c}</div>
-                `).join("")}
-            </div>
+                </div>
+            `;
 
-        </div>
+            postsContainer.appendChild(card);
 
-    </div>
-`;
+        });
 
     } catch (err) {
         console.log(err);
@@ -163,15 +161,83 @@ async function loadPosts() {
 
 loadPosts();
 
+// ----------------------
+// VOTING (PROPER FIX)
+// ----------------------
+
+window.upvote = async (id) => {
+    try {
+        const ref = doc(db, "posts", id);
+        await updateDoc(ref, {
+            votes: increment(1)
+        });
+        loadPosts();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+window.downvote = async (id) => {
+    try {
+        const ref = doc(db, "posts", id);
+        await updateDoc(ref, {
+            votes: increment(-1)
+        });
+        loadPosts();
+    } catch (err) {
+        console.log(err);
+    }
+};
 
 // ----------------------
-// RESOURCE SYSTEM
+// COMMENTS (PROPER FIX)
+// ----------------------
+
+window.addComment = async (id) => {
+
+    const input = document.getElementById(`c-${id}`);
+    const comment = input.value.trim();
+
+    if (!comment) return;
+
+    try {
+
+        const ref = doc(db, "posts", id);
+
+        const snapshot = await getDocs(collection(db, "posts"));
+
+        snapshot.forEach(async (docSnap) => {
+
+            if (docSnap.id === id) {
+
+                const data = docSnap.data();
+
+                const updatedComments = data.comments || [];
+                updatedComments.push(comment);
+
+                await updateDoc(ref, {
+                    comments: updatedComments
+                });
+
+            }
+
+        });
+
+        input.value = "";
+        loadPosts();
+
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+// ----------------------
+// RESOURCE SYSTEM (UNCHANGED BUT CLEAN)
 // ----------------------
 
 const resourceForm = document.getElementById("resourceForm");
 const resourcesContainer = document.getElementById("resourcesContainer");
 
-// Add Resource
 resourceForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -188,11 +254,10 @@ resourceForm.addEventListener("submit", async (e) => {
         resourceForm.reset();
         loadResources();
     } catch (err) {
-        console.log("Resource error:", err);
+        console.log(err);
     }
 });
 
-// Load Resources
 async function loadResources() {
 
     try {
@@ -201,7 +266,9 @@ async function loadResources() {
 
         let resources = [];
 
-        snapshot.forEach(doc => resources.push(doc.data()));
+        snapshot.forEach(docSnap => {
+            resources.push(docSnap.data());
+        });
 
         resources.sort((a, b) => b.createdAt - a.createdAt);
 
@@ -210,13 +277,10 @@ async function loadResources() {
         resources.forEach(res => {
 
             const card = document.createElement("div");
-
             card.className = "feed-card";
 
             card.innerHTML = `
-                <div class="badge resource">
-                    Resource
-                </div>
+                <div class="badge resource">Resource</div>
 
                 <div class="title">📘 ${res.title}</div>
 
@@ -240,81 +304,3 @@ async function loadResources() {
 }
 
 loadResources();
-
-window.upvote = async (id) => {
-
-    const snapshot = await getDocs(collection(db, "posts"));
-
-    snapshot.forEach(async (docItem) => {
-
-        const data = docItem.data();
-
-        if (data.createdAt == id) {
-
-            await addDoc(collection(db, "posts"), {
-                ...data,
-                votes: (data.votes || 0) + 1,
-                createdAt: Date.now()
-            });
-
-        }
-
-    });
-
-    loadPosts();
-};
-
-window.downvote = async (id) => {
-
-    const snapshot = await getDocs(collection(db, "posts"));
-
-    snapshot.forEach(async (docItem) => {
-
-        const data = docItem.data();
-
-        if (data.createdAt == id) {
-
-            await addDoc(collection(db, "posts"), {
-                ...data,
-                votes: (data.votes || 0) - 1,
-                createdAt: Date.now()
-            });
-
-        }
-
-    });
-
-    loadPosts();
-};
-
-window.addComment = async (id) => {
-
-    const input = document.getElementById(`c-${id}`);
-    const comment = input.value;
-
-    if (!comment) return;
-
-    const snapshot = await getDocs(collection(db, "posts"));
-
-    snapshot.forEach(async (docItem) => {
-
-        const data = docItem.data();
-
-        if (data.createdAt == id) {
-
-            const updatedComments = data.comments || [];
-            updatedComments.push(comment);
-
-            await addDoc(collection(db, "posts"), {
-                ...data,
-                comments: updatedComments,
-                createdAt: Date.now()
-            });
-
-        }
-
-    });
-
-    input.value = "";
-    loadPosts();
-};
