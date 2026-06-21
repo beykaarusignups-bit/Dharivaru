@@ -11,7 +11,7 @@
 
 <div class="app">
 
-    <!-- LEFT MAIN FEED -->
+    <!-- MAIN FEED -->
     <div class="main-feed">
 
         <header class="topbar">
@@ -25,10 +25,10 @@
             <button id="helpBtn">🤝 Can Help</button>
         </div>
 
-        <!-- FORM -->
-        <div class="card form-card">
+        <!-- POST FORM -->
+        <div class="card">
 
-            <h2 id="formTitle">Ask a question</h2>
+            <h2 id="formTitle">Tell us what you need</h2>
 
             <form id="postForm">
 
@@ -40,10 +40,9 @@
                     <option>English</option>
                     <option>Dhivehi</option>
                     <option>Programming</option>
-                    <option>Other</option>
                 </select>
 
-                <textarea id="description" placeholder="Ask your question..." required></textarea>
+                <textarea id="description" placeholder="Write here..." required></textarea>
 
                 <input id="contact" placeholder="Contact (optional)">
 
@@ -53,37 +52,39 @@
 
         </div>
 
-        <!-- FEED -->
+        <!-- POSTS FEED -->
         <div id="postsContainer"></div>
 
     </div>
 
-    <!-- RIGHT SIDEBAR -->
+    <!-- SIDEBAR -->
     <div class="sidebar">
 
-        <h2>📚 Resources</h2>
+        <div class="card">
 
-        <form id="resourceForm">
+            <h2>📚 Resources</h2>
 
-            <input id="resTitle" placeholder="Resource title" required>
+            <form id="resourceForm">
 
-            <select id="resSubject">
-                <option>Mathematics</option>
-                <option>Science</option>
-                <option>English</option>
-                <option>Programming</option>
-            </select>
+                <input id="resTitle" placeholder="Title" required>
 
-            <input id="resLink" placeholder="Link" required>
+                <select id="resSubject">
+                    <option>Mathematics</option>
+                    <option>Science</option>
+                    <option>Programming</option>
+                </select>
 
-            <!-- FIXED: THIS WAS MISSING BEFORE -->
-            <textarea id="resDesc" placeholder="Short description"></textarea>
+                <input id="resLink" placeholder="Link" required>
 
-            <button type="submit">Add</button>
+                <textarea id="resDesc" placeholder="Description"></textarea>
 
-        </form>
+                <button type="submit">Add Resource</button>
 
-        <div id="resourcesContainer"></div>
+            </form>
+
+            <div id="resourcesContainer"></div>
+
+        </div>
 
     </div>
 
