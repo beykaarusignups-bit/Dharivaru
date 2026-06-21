@@ -219,11 +219,26 @@ async function loadResources() {
         card.className = "post-card";
 
         card.innerHTML = `
-            <h3>📘 ${res.title}</h3>
-            <p><strong>Subject:</strong> ${res.subject}</p>
-            <p>${res.description || ""}</p>
-            <a href="${res.link}" target="_blank">Open Resource</a>
-        `;
+    <div class="resource-card">
+
+        <div class="resource-title">
+            📘 ${res.title}
+        </div>
+
+        <div class="resource-subject">
+            Subject: ${res.subject}
+        </div>
+
+        <div class="resource-desc">
+            ${res.description || "No description provided"}
+        </div>
+
+        <a class="resource-btn" href="${res.link}" target="_blank">
+            🔗 Open Resource
+        </a>
+
+    </div>
+`;
 
         resourcesContainer.appendChild(card);
 
