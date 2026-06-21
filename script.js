@@ -61,14 +61,17 @@ helpBtn.addEventListener("click", () => {
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const post = {
-        type: postType,
-        name: document.getElementById("name").value,
-        subject: document.getElementById("subject").value,
-        description: document.getElementById("description").value,
-        contact: document.getElementById("contact").value,
-        createdAt: Date.now()
-    };
+   const post = {
+    type: postType,
+    name: document.getElementById("name").value,
+    subject: document.getElementById("subject").value,
+    description: document.getElementById("description").value,
+    contact: document.getElementById("contact").value,
+    createdAt: Date.now(),
+
+    votes: 0,
+    comments: []
+};
 
     try {
         await addDoc(collection(db, "posts"), post);
