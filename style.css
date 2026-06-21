@@ -1,15 +1,100 @@
- /* UNIFIED CARD SYSTEM */
-.feed-card{
-    background:white;
-    padding:18px;
-    border-radius:16px;
-    margin-bottom:12px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.06);
-    transition:0.2s;
+
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:system-ui, Arial;
 }
 
-.feed-card:hover{
-    transform:translateY(-2px);
+body{
+    background:#f4f6fb;
+}
+
+/* APP LAYOUT */
+.app{
+    display:flex;
+    gap:20px;
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+
+/* LEFT FEED */
+.main-feed{
+    flex:2;
+}
+
+/* RIGHT SIDEBAR */
+.sidebar{
+    flex:1;
+}
+
+/* TOPBAR */
+.topbar{
+    background:#2f63e0;
+    color:white;
+    padding:25px;
+    border-radius:16px;
+    margin-bottom:15px;
+}
+
+/* TOGGLE */
+.toggle{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.toggle button{
+    flex:1;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:white;
+}
+
+.toggle .active{
+    background:#2f63e0;
+    color:white;
+}
+
+/* CARD */
+.card{
+    background:white;
+    padding:15px;
+    border-radius:16px;
+    margin-bottom:15px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* FORM */
+input, textarea, select{
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    border:1px solid #ddd;
+    border-radius:10px;
+}
+
+button{
+    margin-top:10px;
+    padding:10px;
+    border:none;
+    background:#2f63e0;
+    color:white;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+/* FEED CARD */
+.feed-card{
+    background:white;
+    padding:15px;
+    border-radius:16px;
+    margin-bottom:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
 }
 
 /* BADGE */
@@ -19,133 +104,52 @@
     font-size:12px;
     border-radius:20px;
     color:white;
-    margin-bottom:10px;
-}
-
-/* TYPE COLORS */
-.need{
-    background:#ff4d4d;
-}
-
-.help{
-    background:#34c759;
-}
-
-.resource{
-    background:#2f63e0;
-}
-
-/* TITLE */
-.title{
-    font-size:16px;
-    font-weight:700;
-    margin-bottom:6px;
-}
-
-/* SUBJECT / META */
-.meta{
-    font-size:13px;
-    color:#666;
     margin-bottom:8px;
 }
 
+.need{ background:#ff4d4d; }
+.help{ background:#34c759; }
+.resource{ background:#2f63e0; }
+
 /* TEXT */
-.text{
-    font-size:14px;
-    color:#333;
-    margin-bottom:10px;
-}
+.title{ font-weight:700; margin-bottom:5px; }
+.meta{ font-size:13px; color:#666; margin-bottom:6px; }
+.text{ font-size:14px; margin-bottom:10px; }
 
-/* LINK BUTTON */
-.link-btn{
-    display:inline-block;
-    padding:8px 12px;
-    background:#2f63e0;
-    color:white;
-    text-decoration:none;
-    border-radius:8px;
-    font-size:13px;
-    transition:0.2s;
-}
-
-.link-btn:hover{
-    background:#1f4fc7;
-}
-
-/* ========================= */
-/* VOTING SYSTEM (IMPROVED) */
-/* ========================= */
-
+/* VOTES */
 .vote-section{
     display:flex;
-    gap:8px;
+    gap:10px;
     align-items:center;
-    margin-top:12px;
+    margin-top:10px;
 }
 
 .vote-section button{
-    padding:6px 10px;
-    border:none;
+    padding:5px 10px;
     border-radius:8px;
-    cursor:pointer;
+    border:none;
     background:#f1f3f6;
-    transition:0.2s;
-    font-size:13px;
+    cursor:pointer;
 }
 
-.vote-section button:hover{
-    background:#e2e6ee;
-}
-
-.vote-section span{
-    font-size:13px;
-    font-weight:600;
-    color:#333;
-}
-
-/* ========================= */
-/* COMMENTS SYSTEM (IMPROVED) */
-/* ========================= */
-
+/* COMMENTS */
 .comment-section{
-    margin-top:12px;
+    margin-top:10px;
     display:flex;
     flex-direction:column;
-    gap:8px;
-    border-top:1px solid #eee;
-    padding-top:10px;
+    gap:6px;
 }
 
-.comment-section input{
-    padding:9px;
-    border:1px solid #ddd;
-    border-radius:10px;
-    outline:none;
-}
-
-.comment-section input:focus{
-    border-color:#2f63e0;
-}
-
-.comment-section button{
-    padding:8px;
-    border:none;
-    border-radius:10px;
-    background:#2f63e0;
-    color:white;
-    cursor:pointer;
-    transition:0.2s;
-}
-
-.comment-section button:hover{
-    background:#1f4fc7;
-}
-
-/* COMMENT ITEMS */
 .comment{
     font-size:13px;
     background:#f4f6fb;
-    padding:8px;
+    padding:6px;
     border-radius:8px;
-    margin-top:5px;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+    .app{
+        flex-direction:column;
+    }
 }
